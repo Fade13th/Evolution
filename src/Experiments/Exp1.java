@@ -18,7 +18,7 @@ public class Exp1 {
     public int width = 600;
     public int gens = 600;
 
-    private int sampleSize = 15;
+    private int sampleSize = 1;
 
 
     private List<Coord> points1 = new ArrayList<>();
@@ -76,7 +76,7 @@ public class Exp1 {
             sub1.add(new Coord(i*widthScale, 49 - Math.round(subj1)));
             sub2.add(new Coord(i*widthScale, 49 - Math.round(subj2)));
 
-            if (i == 5) {
+            if (i == 200) {
                 int a = 3;
             }
             pop1.fintessProportionate(sample2);

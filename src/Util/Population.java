@@ -70,60 +70,38 @@ public class Population {
     public void fintessProportionate(List<Individual> S) {
         List<Individual> nextGen = new ArrayList<>();
 
-        Map<Integer, List<Integer>> ranking = new TreeMap<>();
+        int totFitness = 0;
 
-        for (int i = 0; i < individuals.size(); i++) {
-            int val = individuals.get(i).value();
+        for (Individual old : individuals) {
+            totFitness += f1(old, S);
+        }
 
-            if (!ranking.containsKey(val)) {
-                ranking.put(val, new ArrayList<Integer>());
+        if (totFitness == 0) {
+            for (Individual i : individuals) {
+                nextGen.add(i.mutate());
             }
-                ranking.get(val).add(i);
         }
+        else {
+            List<Float> weights = new ArrayList<>();
+            float totWeight = 0.0f;
 
-        SortedSet<Integer> keys = new TreeSet<>(ranking.keySet());
-
-        float slots = 0;
-        float slotSize = 1;
-
-        for (Integer key : keys) {
-            slots += ranking.get(key).size() * slotSize;
-
-            slotSize++;
-        }
-
-        Map<Integer, Float> weights = new HashMap<>();
-        float currWeight = 0.0f;
-
-        slotSize = 1;
-        for (Integer key : keys) {
-            for (Integer ind : ranking.get(key)) {
-                currWeight += (slotSize/slots);
-                weights.put(ind, currWeight);
+            for (int i = 0; i < individuals.size(); i++) {
+                totWeight += (float)f1(individuals.get(i), S) / (float) totFitness;
+                weights.add(totWeight);
             }
-            slotSize++;
-        }
 
-        for (int i = 0; i < size; i++) {
-            float rand = (float) Math.random();
+            for (int i = 0; i < size; i++) {
+                float rand = (float) Math.random();
 
-            int key = 0;
-            float lowestMatch = 10.0f;
-
-            for (Integer wkey : weights.keySet()) {
-                if (weights.get(wkey) < lowestMatch && rand <= weights.get(wkey)) {
-                    key = wkey;
-                    lowestMatch = weights.get(wkey);
+                for (int j = 0; j < size; j++) {
+                    if (rand <= weights.get(j)) {
+                        nextGen.add(individuals.get(j).mutate());
+                        break;
+                    }
                 }
             }
-
-            nextGen.add(individuals.get(key).mutate());
         }
 
-        for(Individual a : nextGen) {
-            System.out.println(a.value());
-        }
-        System.out.println();
         individuals = nextGen;
     }
 
