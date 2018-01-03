@@ -17,7 +17,8 @@ public class GraphPane extends JPanel {
         setSize(new Dimension(width, height));
         setMinimumSize(new Dimension(width,height));
         setPreferredSize(new Dimension(width,height));
-        setBackground(Color.WHITE);
+        this.setOpaque(true);
+        this.setBackground(Color.BLACK);
 
         points = new ArrayList<>();
         cols = new ArrayList<>();
@@ -29,7 +30,8 @@ public class GraphPane extends JPanel {
     }
 
     public void paint(Graphics g) {
-        g.setColor(Color.black);
+        super.paint(g);
+        g.setColor(Color.WHITE);
         g.drawLine(0, getHeight()/2, getWidth(), getHeight()/2);
 
         for (int i = 0; i < points.size(); i++) {

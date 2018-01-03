@@ -42,7 +42,7 @@ public class Population {
             tot += f1(i, sample);
         }
 
-        return tot/size;
+        return tot/sample.size();
     }
 
     public List<Individual> getSample(int size) {

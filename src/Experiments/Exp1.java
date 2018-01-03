@@ -32,7 +32,7 @@ public class Exp1 {
         evolvePops();
 
         graphPane.addPopulation(points1, Color.red);
-        graphPane.addPopulation(points2, Color.blue);
+        graphPane.addPopulation(points2, Color.green);
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -41,7 +41,7 @@ public class Exp1 {
 
         JPanel subjs = new JPanel(new GridLayout(2, 1));
         subjs.add(new SubjectivePane(sub1, Color.red));
-        subjs.add(new SubjectivePane(sub2, Color.blue));
+        subjs.add(new SubjectivePane(sub2, Color.green));
 
         frame.add(subjs, BorderLayout.SOUTH);
 
@@ -76,7 +76,7 @@ public class Exp1 {
             sub1.add(new Coord(i*widthScale, 49 - Math.round(subj1)));
             sub2.add(new Coord(i*widthScale, 49 - Math.round(subj2)));
 
-            if (i == 200) {
+            if (i == 100) {
                 int a = 3;
             }
             pop1.fintessProportionate(sample2);
