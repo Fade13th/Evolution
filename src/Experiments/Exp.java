@@ -20,7 +20,7 @@ public class Exp {
 
     private int sampleSize = 15;
 
-    private int experiment = 4;
+    private int experiment = 6;
 
     private List<Coord> points1 = new ArrayList<>();
     private List<Coord> sub1 = new ArrayList<>();

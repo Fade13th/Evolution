@@ -118,6 +118,11 @@ public class Population {
                 case 3 : tot += score3(a, s);
                     break;
                 case 4 : tot += score4(a, s);
+                    break;
+                case 5 : tot += score5(a, s);
+                    break;
+                case 6 : tot += score6(a, s);
+                    break;
                 default:
                     tot += score1(a, s);
                     break;
@@ -193,6 +198,50 @@ public class Population {
         }
 
         return (aG.get(genomeMax) > bG.get(genomeMax) && aG.get(genomeMin) > bG.get(genomeMin)) ? 1 : 0;
+    }
+
+    private int score5(Individual a, Individual b) {
+        List<Integer> aG = a.getGenoneScores();
+        List<Integer> bG = b.getGenoneScores();
+
+        int wins = 0;
+
+        for (int i = 0; i < (individualSize/genomes); i++) {
+            if (aG.get(i) > bG.get(i)) {
+                wins++;
+            }
+            else if (aG.get(i) < bG.get(i)) {
+                wins--;
+            }
+        }
+
+        return wins > 0 ? 1 : 0;
+    }
+
+    private int score6(Individual a, Individual b) {
+        List<Integer> aG = a.getGenoneScores();
+        List<Integer> bG = b.getGenoneScores();
+
+        int wins = 0;
+
+        Map<Integer, List<Integer>> gaps = new HashMap<>();
+
+        for (int i = 0; i < (individualSize/genomes); i++) {
+            int gap = Math.abs(aG.get(i) - bG.get(i));
+
+            if (!gaps.containsKey(gap)) {
+                gaps.put(gap, new ArrayList<Integer>());
+            }
+            gaps.get(gap).add(i);
+        }
+
+        for (Integer key : gaps.keySet()) {
+            for (Integer gen : gaps.get(key)) {
+                wins += ((aG.get(gen) - bG.get(gen)) * key);
+            }
+        }
+
+        return wins > 0 ? 1 : 0;
     }
 
     private void addIndividual(int initialization) {
