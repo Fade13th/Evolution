@@ -114,6 +114,12 @@ public class Population {
                 case 1 : tot += score1(a, s);
                     break;
                 case 2 : tot += score2(a, s);
+                    break;
+                case 3 : tot += score3(a, s);
+                    break;
+                default:
+                    tot += score1(a, s);
+                    break;
             }
         }
 
@@ -136,6 +142,23 @@ public class Population {
 
         for (int i = 0; i < (individualSize/genomes); i++) {
             if (Math.abs(aG.get(i) - bG.get(i)) > maxGap) {
+                maxGap = Math.abs(aG.get(i) - bG.get(i));
+                genome = i;
+            }
+        }
+
+        return aG.get(genome) > bG.get(genome) ? 1 : 0;
+    }
+
+    private int score3(Individual a, Individual b) {
+        List<Integer> aG = a.getGenoneScores();
+        List<Integer> bG = b.getGenoneScores();
+
+        int maxGap = Integer.MAX_VALUE;
+        int genome = 0;
+
+        for (int i = 0; i < (individualSize/genomes); i++) {
+            if (Math.abs(aG.get(i) - bG.get(i)) < maxGap) {
                 maxGap = Math.abs(aG.get(i) - bG.get(i));
                 genome = i;
             }
