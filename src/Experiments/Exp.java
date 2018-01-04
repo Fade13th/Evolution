@@ -13,20 +13,21 @@ import java.util.List;
 /**
  * Created by Matt on 2018-01-02.
  */
-public class Exp1 {
+public class Exp {
     public int height = 300;
     public int width = 600;
     public int gens = 600;
 
-    private int sampleSize = 1;
+    private int sampleSize = 15;
 
+    private int experiment = 2;
 
     private List<Coord> points1 = new ArrayList<>();
     private List<Coord> sub1 = new ArrayList<>();
     private List<Coord> points2 = new ArrayList<>();
     private List<Coord> sub2 = new ArrayList<>();
 
-    public Exp1() {
+    public Exp() {
         GraphPane graphPane = new GraphPane(width,height);
 
         evolvePops();
@@ -61,10 +62,10 @@ public class Exp1 {
             List<Population.Individual> sample2 = pop2.getSample(sampleSize);
 
             List<Integer> vals1 = pop1.getValues();
-            Float subj1 = pop1.getAveSubjective(sample2);
+            Float subj1 = pop1.getAveSubjective(sample2, experiment);
 
             List<Integer> vals2 = pop2.getValues();
-            Float subj2 = pop2.getAveSubjective(sample1);
+            Float subj2 = pop2.getAveSubjective(sample1, experiment);
 
             for (Integer integer : vals1) {
                 points1.add(new Coord(i*widthScale, height - (integer*heightScale)));
@@ -79,12 +80,12 @@ public class Exp1 {
             if (i == 100) {
                 int a = 3;
             }
-            pop1.fintessProportionate(sample2);
-            pop2.fintessProportionate(sample1);
+            pop1.fintessProportionate(sample2, experiment);
+            pop2.fintessProportionate(sample1, experiment);
         }
     }
 
     public static void main(String[] args) {
-        new Exp1();
+        new Exp();
     }
 }

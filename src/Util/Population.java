@@ -8,6 +8,7 @@ import java.util.*;
 public class Population {
     private int size = 25;
     private int individualSize = 100;
+    private int genomes = 10;
 
     private float changeChance = 0.005f;
 
@@ -35,11 +36,11 @@ public class Population {
         return vals;
     }
 
-    public Float getAveSubjective(List<Individual> sample) {
+    public Float getAveSubjective(List<Individual> sample, int experiment) {
         float tot = 0;
 
         for (Individual i : individuals) {
-            tot += f1(i, sample);
+            tot += f1(i, sample, experiment);
         }
 
         return tot/sample.size();
@@ -67,13 +68,13 @@ public class Population {
         individuals = nextGen;
     }
 
-    public void fintessProportionate(List<Individual> S) {
+    public void fintessProportionate(List<Individual> S, int experiment) {
         List<Individual> nextGen = new ArrayList<>();
 
         int totFitness = 0;
 
         for (Individual old : individuals) {
-            totFitness += f1(old, S);
+            totFitness += f1(old, S, experiment);
         }
 
         if (totFitness == 0) {
@@ -86,7 +87,7 @@ public class Population {
             float totWeight = 0.0f;
 
             for (int i = 0; i < individuals.size(); i++) {
-                totWeight += (float)f1(individuals.get(i), S) / (float) totFitness;
+                totWeight += (float)f1(individuals.get(i), S, experiment) / (float) totFitness;
                 weights.add(totWeight);
             }
 
@@ -105,11 +106,15 @@ public class Population {
         individuals = nextGen;
     }
 
-    private int f1(Individual a, List<Individual> S) {
+    private int f1(Individual a, List<Individual> S, int experiment) {
         int tot = 0;
 
         for (Individual s : S) {
-            tot += score1(a, s);
+            switch (experiment) {
+                case 1 : tot += score1(a, s);
+                    break;
+                case 2 : tot += score2(a, s);
+            }
         }
 
         return tot;
@@ -120,6 +125,23 @@ public class Population {
             return 1;
         }
         else return 0;
+    }
+
+    private int score2(Individual a, Individual b) {
+        List<Integer> aG = a.getGenoneScores();
+        List<Integer> bG = b.getGenoneScores();
+
+        int maxGap = 0;
+        int genome = 0;
+
+        for (int i = 0; i < (individualSize/genomes); i++) {
+            if (Math.abs(aG.get(i) - bG.get(i)) > maxGap) {
+                maxGap = Math.abs(aG.get(i) - bG.get(i));
+                genome = i;
+            }
+        }
+
+        return aG.get(genome) > bG.get(genome) ? 1 : 0;
     }
 
     private void addIndividual(int initialization) {
@@ -160,6 +182,22 @@ public class Population {
             }
 
             return i;
+        }
+
+        protected List<Integer> getGenoneScores() {
+            List<Integer> vals = new ArrayList<>();
+            int genomeSize = individualSize/genomes;
+
+            for (int i = 0; i < individualSize; i += genomeSize) {
+                int genomeTot = 0;
+                for (int j = i; j < i + genomeSize; j++) {
+                    genomeTot += val[j];
+                }
+
+                vals.add(genomeTot);
+            }
+
+            return vals;
         }
     }
 }
